@@ -1,0 +1,20 @@
+CC = gcc
+AS = as
+LD = ld
+CFLAGS = -g -Wall -ffreestanding
+LDFLAGS = -Tldscripts/linker.ld -nostartfiles
+OBJ = kernel.o start.o video.o interrupt.o
+
+all: kernel.bin
+
+kernel.bin: $(OBJ)
+    $(LD) $(LDFLAGS) -o $@ $(OBJ)
+
+%.o: %.c
+    $(CC) $(CFLAGS) -c -o $@ $<
+
+%.o: %.s
+    $(AS) -o $@ $<
+
+clean:
+    rm -f *.o kernel.bin
