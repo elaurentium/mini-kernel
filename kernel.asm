@@ -1,20 +1,15 @@
-bits 32
-section .text
-        ;multiboot spec
-        align 4
-        dd 0x1BADB002              	;magic
-        dd 0x00                    	;flags
-        dd - (0x1BADB002 + 0x00)   	;checksum. m+f+c should be zero
+    .global start
+    .extern main            ; Definido no arquivo C
 
-global start
-extern kmain 				;this is defined in the c file
+    .section .text
+    .align 4
+    .global _start
 
-start:
-	cli 				;block interrupts
-	mov esp, stack_space		;set stack pointer
-	call kmain
-	hlt 				;halt the CPU
+_start:
+    mov sp, stack_space     ; Definir ponteiro de pilha (SP)
+    bl main                ; Chamar a função kmain
+    b .                     ; Loop infinito para interromper a execução
 
-section .bss
-resb 8192				;8KB for stack
+    .section .bss
 stack_space:
+    .skip 8192              ; 8KB para a pilha
