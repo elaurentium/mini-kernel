@@ -1,20 +1,5 @@
-CC = gcc
-AS = as
-LD = ld
-CFLAGS = -g -Wall -ffreestanding
-LDFLAGS = -Tldscripts/linker.ld -nostartfiles
-OBJ = kernel.o start.o video.o interrupt.o
-
-all: kernel.bin
-
-kernel.bin: $(OBJ)
-    $(LD) $(LDFLAGS) -o $@ $(OBJ)
-
-%.o: %.c
-    $(CC) $(CFLAGS) -c -o $@ $<
-
-%.o: %.s
-    $(AS) -o $@ $<
+all:
+	nasm -f bin ./src/boot/boot.asm -o ./bin/boot.bin 
 
 clean:
-    rm -f *.o kernel.bin
+	rm -f ./bin/boot.bin
