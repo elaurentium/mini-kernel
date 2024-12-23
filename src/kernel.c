@@ -15,6 +15,12 @@ void terminal_putchar(int x, int y, char c, char colour) {
 }
 
 void terminal_writechar(char c, char colour) {
+    if (c == '\n') {
+        terminal_column = 0;
+        terminal_row += 1;
+        return;
+    }
+
     terminal_putchar(terminal_column, terminal_row, c, colour);
     terminal_column += 1;
 
